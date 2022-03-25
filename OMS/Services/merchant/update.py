@@ -18,7 +18,7 @@ def callUpdate(inventory_id, product_code, product_desc, price, quantity):
     for i in range(len(valid_inputs)):
         string_query += valid_inputs[i]
     final_query = string_query[:len(string_query)-2]
-    query = "UPDATE inventory SET {}WHERE inventory_id = \"{}\" ".format(final_query, inventory_id )
+    query = "UPDATE inventory SET {} WHERE inventory_id = \"{}\" ".format(final_query, inventory_id )
     print(query)
     cursor.execute(query)
     return
