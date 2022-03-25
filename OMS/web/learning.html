@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title>I'm Learning HTML</title>
+  <style>
+    body {
+      background-color: powderblue;
+    }
+
+    h1 {
+      color: red;
+    }
+
+    p {
+      color: blue;
+    }
+  </style>
+  <script src="learning.js?i=5" type="text/javascript">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" 
+  integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" 
+  crossorigin="anonymous" referrerpolicy="no-referrer">
+  </script>
+
+</head>
+
+<body>
+
+  <h1>This is a Heading</h1>
+  <p>This is a paragraph.
+    hi there
+  </p>
+
+  <p> This is my new section</p>
+
+  <button type="button">Click Me!</button>
+
+  <img src="https://www.calpoly.edu/themes/custom/calpoly_v2/images/calpoly-logo-reversed.svg" alt="Cal Poly Image"
+    width="200" height="240">
+
+  <button type="button" onclick="document.getElementById('madhav').innerHTML = Date()">
+    Click me to display Date and Time.</button>
+
+  <p id="madhav"></p>
+
+  <textarea type="text" id="fname" name="fname" value="date will be displayed here" size=100></textarea>
+    <br><br>
+
+  <button type="button" onclick="getInventory();">Click me to display Date and Time.</button>
+
+  <button type="button" onclick="clearDate();">Clear</button>
+
+</body>
+
+</html>

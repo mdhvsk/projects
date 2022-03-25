@@ -4,10 +4,23 @@ from flask import Flask, jsonify, request, Response
 from UI.merchant.inputUpdate import ask_update_values
 from Services.merchant.list import callList
 from mysqlConnector import MySQL
+from Services.merchant.update_request import UpdateRequest
+from Services.merchant.update import callUpdate
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='',static_folder='web')
 #app.run()
+@app.before_request
+def init_db_connection():
+    mysql = MySQL.getInstance()
+    mysql.open_connection()
+    print("DB: connected")
+  # here I connect to my DB
 
+@app.teardown_request
+def destroy_db(exception):
+    mysql = MySQL.getInstance()
+    mysql.close_connection()
+    print("DB: closed")
 
 @app.route("/")
 def hello_world():
@@ -39,65 +52,13 @@ def convert_to_json(result):
 
 
 @app.route("/inventory/update", methods=['POST'])
-class UpdateRequest:
-    def __init__(self, json_str):
-        self.json_obj = json.loads(json_str)
-
-    def get_id(self):
-        output = None
-        try:
-            output = self.json_obj["id"]
-        except:
-            output = None
-        return output
-
-    def get_code(self):
-        output = None
-        try:
-            output = self.json_obj["product_code"]
-        except:
-            output = None
-        return output
-
-    def get_desc(self):
-        output = None
-        try:
-            output = self.json_obj["product_description"]
-        except:
-            output = None
-        return output
-
-    def get_price(self):
-        output = None
-        try:
-            output = self.json_obj["price"]
-        except:
-            output = None
-        return output
-
-    def get_quantity(self):
-        output = None
-        try:
-            output = self.json_obj["quantity"]
-        except:
-            output = None
-        return output
-
-
 def inventory_update():
-    data = request.get_json()
+    update = UpdateRequest(request.get_json())
 
+    callUpdate(update.get_id(), update.get_code(), update.get_desc(), update.get_price(),
+               update.get_quantity())
 
-    print(data)
-    inventory_id, product_code, product_desc, price, quantity = ask_update_values()
-    result = [inventory_id, product_code, product_desc, price, quantity]
-    #[("TNBL", "Tennis Ball", 2.19, 50), ("IPHONE", "IPHONE 13", 899.99, 5)]
-    r = convert_to_json(result)
-    print(r)
-
-    print("------------")
-
-    response = Response(r, status=200, mimetype='application/json')
+    response = Response("{}", status=200, mimetype='application/json')
 
     return response
 
@@ -105,7 +66,6 @@ def inventory_update():
 def inventory_list():
     mysql = MySQL.getInstance()
     mysql.open_connection()
-    data = request.get_json()
     result = callList()
     r = convert_to_json(result)
     print(r)
